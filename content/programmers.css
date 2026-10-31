@@ -1,0 +1,197 @@
+/* 프로그래머스허브 (ProgrammersHub) Content Script Styles */
+
+#pghub-toast-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 2147483647;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 380px;
+  font-family: -apple-system, BlinkMacSystemFont, "Pretendard", "Segoe UI", Roboto, sans-serif;
+  pointer-events: none;
+}
+
+.pghub-toast {
+  pointer-events: auto;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: #1e293b;
+  color: #f8fafc;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.1);
+  font-size: 13.5px;
+  line-height: 1.45;
+  animation: pghubSlideIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.pghub-toast.pghub-toast-hide {
+  opacity: 0;
+  transform: translateY(-8px);
+}
+
+.pghub-toast-loading {
+  border-left: 4px solid #38bdf8;
+}
+
+.pghub-toast-success {
+  border-left: 4px solid #22c55e;
+}
+
+.pghub-toast-skipped {
+  border-left: 4px solid #eab308;
+}
+
+.pghub-toast-error {
+  border-left: 4px solid #ef4444;
+}
+
+.pghub-toast-icon {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  margin-top: 1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pghub-toast-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.pghub-toast-title {
+  font-weight: 700;
+  font-size: 14px;
+  margin-bottom: 3px;
+  color: #ffffff;
+}
+
+.pghub-toast-desc {
+  color: #cbd5e1;
+  font-size: 12.5px;
+  word-break: break-word;
+}
+
+.pghub-toast-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.pghub-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none !important;
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.08);
+  color: #f8fafc !important;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.pghub-btn:hover {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.28);
+}
+
+.pghub-btn-primary {
+  background: #2563eb;
+  border-color: #3b82f6;
+}
+
+.pghub-btn-primary:hover {
+  background: #1d4ed8;
+}
+
+.pghub-toast-close {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+
+.pghub-toast-close:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Modal Footer Status Badge */
+#pghub-modal-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  margin-right: auto;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  background: #1e293b;
+  color: #f8fafc;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+#pghub-modal-badge .pghub-badge-link {
+  color: #60a5fa !important;
+  text-decoration: underline !important;
+  font-size: 12.5px;
+  margin-left: 4px;
+  cursor: pointer;
+}
+
+#pghub-modal-badge .pghub-badge-action {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #f8fafc;
+  border-radius: 5px;
+  padding: 2px 8px;
+  font-size: 11.5px;
+  cursor: pointer;
+  margin-left: 4px;
+}
+
+#pghub-modal-badge .pghub-badge-action:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Spinner */
+.pghub-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2.2px solid rgba(56, 189, 248, 0.25);
+  border-top-color: #38bdf8;
+  border-radius: 50%;
+  animation: pghubSpin 0.75s linear infinite;
+}
+
+@keyframes pghubSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pghubSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}

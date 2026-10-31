@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>프로그래머스허브 (ProgrammersHub)</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <div class="app">
+    <!-- Header -->
+    <header class="header">
+      <div class="brand">
+        <div class="brand-logo">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div>
+          <h1 class="brand-title">프로그래머스허브</h1>
+          <p class="brand-subtitle">Firefox · BaekjoonHub 100% 호환</p>
+        </div>
+      </div>
+      <span id="status-pill" class="status-pill status-disconnected">미연결</span>
+    </header>
+
+    <!-- Error / Alert Banner -->
+    <div id="alert-box" class="alert-box hidden"></div>
+
+    <!-- SECTION 1: Logged Out View -->
+    <section id="auth-section" class="card">
+      <h2 class="section-title">GitHub 계정 연결</h2>
+      <p class="section-desc">
+        GitHub OAuth Device Flow를 사용하여 안전하게 로그인합니다.
+      </p>
+
+      <!-- Step 1: Start Device Flow -->
+      <div id="device-flow-idle">
+        <button id="btn-start-device-flow" class="btn btn-primary btn-full">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+          </svg>
+          GitHub Device Flow로 로그인
+        </button>
+      </div>
+
+      <!-- Step 2: Active Device Code Pending -->
+      <div id="device-flow-pending" class="device-box hidden">
+        <div class="device-instruction">
+          아래 8자리 인증 코드를 복사한 뒤 GitHub 인증 페이지에 입력해주세요.
+          <small>(새 탭이 열려 팝업이 닫혀도 백그라운드에서 자동으로 로그인 완료됩니다)</small>
+        </div>
+        <div class="user-code-wrap">
+          <span id="device-user-code" class="user-code">----</span>
+          <button id="btn-copy-code" class="btn btn-secondary btn-sm" title="코드 복사">복사</button>
+        </div>
+        <div class="device-actions">
+          <button id="btn-open-github-device" class="btn btn-primary btn-full">
+            코드 복사 &amp; GitHub 인증 페이지 열기 ↗
+          </button>
+          <button id="btn-cancel-device" class="btn btn-ghost btn-full">취소</button>
+        </div>
+        <div class="polling-indicator">
+          <span class="spinner-sm"></span>
+          <span>GitHub 승인 대기 중...</span>
+        </div>
+      </div>
+
+      <!-- Advanced OAuth Client ID / PAT Settings -->
+      <details class="advanced-details">
+        <summary>고급 인증 설정 (커스텀 Client ID / PAT 토큰)</summary>
+        <div class="advanced-body">
+          <label class="field-label" for="input-client-id">
+            OAuth App Client ID <span class="muted">(기본값: 백준허브 호환 ID)</span>
+          </label>
+          <div class="row-gap">
+            <input
+              id="input-client-id"
+              type="text"
+              class="input"
+              placeholder="예: Ov23li..."
+            />
+            <button id="btn-save-client-id" class="btn btn-secondary btn-sm">저장</button>
+          </div>
+          <p class="help-text">
+            직접 GitHub OAuth App을 만드실 경우 Settings &rarr; Developer settings &rarr; OAuth Apps에서
+            <strong>Enable Device Flow</strong>를 체크한 뒤 Client ID를 입력하시면 됩니다.
+          </p>
+
+          <hr class="divider" />
+
+          <label class="field-label" for="input-pat">
+            또는 Personal Access Token (PAT)으로 바로 로그인
+          </label>
+          <div class="row-gap">
+            <input
+              id="input-pat"
+              type="password"
+              class="input"
+              placeholder="ghp_... 또는 github_pat_..."
+            />
+            <button id="btn-login-pat" class="btn btn-secondary btn-sm">연결</button>
+          </div>
+        </div>
+      </details>
+    </section>
+
+    <!-- SECTION 2: Logged In View -->
+    <section id="main-section" class="hidden">
+      <!-- User Profile Bar -->
+      <div class="card user-card">
+        <div class="user-info">
+          <img id="user-avatar" class="user-avatar" src="" alt="avatar" />
+          <div>
+            <div class="user-name-row">
+              <strong id="user-login">@username</strong>
+              <span class="badge-auth" id="user-auth-badge">OAuth</span>
+            </div>
+            <a id="user-profile-link" href="#" target="_blank" rel="noopener noreferrer" class="user-link">
+              GitHub 프로필 열기 ↗
+            </a>
+          </div>
+        </div>
+        <button id="btn-logout" class="btn btn-ghost btn-sm">로그아웃</button>
+      </div>
+
+      <!-- Repository Configuration -->
+      <div class="card">
+        <div class="card-header-row">
+          <h2 class="section-title">연결할 GitHub 저장소</h2>
+          <button id="btn-refresh-repos" class="btn-icon" title="저장소 목록 새로고침">↻</button>
+        </div>
+
+        <select id="select-repo" class="select">
+          <option value="">-- 저장소를 선택하세요 --</option>
+        </select>
+
+        <div id="selected-repo-info" class="repo-link-row hidden">
+          <span>현재 연결됨:</span>
+          <a id="link-current-repo" href="#" target="_blank" rel="noopener noreferrer">owner/repo ↗</a>
+        </div>
+
+        <details id="details-create-repo" class="create-repo-details">
+          <summary>+ 새 GitHub 저장소 직접 생성하기</summary>
+          <div class="create-repo-body">
+            <input
+              id="input-new-repo-name"
+              type="text"
+              class="input"
+              placeholder="새 저장소 이름 (예: coding-test)"
+            />
+            <label class="checkbox-label">
+              <input id="check-new-repo-private" type="checkbox" />
+              <span>비공개(Private) 저장소로 생성</span>
+            </label>
+            <button id="btn-create-repo" class="btn btn-primary btn-sm btn-full">
+              저장소 생성 및 연결
+            </button>
+          </div>
+        </details>
+      </div>
+
+      <!-- Upload & Directory Options -->
+      <div class="card">
+        <h2 class="section-title">업로드 및 폴더 구조 설정</h2>
+
+        <label class="field-label" for="select-org-option">폴더 정리 방식 (백준허브 호환)</label>
+        <select id="select-org-option" class="select">
+          <option value="platform">플랫폼별 정리: 프로그래머스/{레벨}/{번호}. {제목}</option>
+          <option value="language">언어별 정리: {언어}/프로그래머스/{레벨}/{번호}. {제목}</option>
+        </select>
+
+        <label class="toggle-row">
+          <span class="toggle-text">
+            <strong>정답 통과 시 자동 커밋</strong>
+            <small>채점 결과가 '정답'이면 즉시 GitHub에 푸시합니다</small>
+          </span>
+          <input id="check-auto-upload" type="checkbox" checked />
+        </label>
+      </div>
+
+      <!-- Recent Upload History -->
+      <div class="card">
+        <h2 class="section-title">최근 커밋 내역</h2>
+        <div id="history-list" class="history-list">
+          <div class="empty-history">아직 커밋된 문제가 없습니다.</div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
+

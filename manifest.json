@@ -1,0 +1,56 @@
+{
+  "manifest_version": 3,
+  "name": "프로그래머스허브 (ProgrammersHub)",
+  "version": "1.0.1",
+  "description": "프로그래머스 문제 풀이 통과 시 백준허브(BaekjoonHub)와 동일한 형식으로 GitHub에 자동 커밋하는 Firefox 확장 프로그램",
+  "homepage_url": "https://github.com/jcm0314/ProgrammersHub",
+  "author": "jcm0314",
+  "icons": {
+    "48": "icons/icon-48.png",
+    "96": "icons/icon-96.png",
+    "128": "icons/icon-128.png"
+  },
+  "action": {
+    "default_icon": {
+      "48": "icons/icon-48.png",
+      "96": "icons/icon-96.png"
+    },
+    "default_title": "프로그래머스허브 설정",
+    "default_popup": "popup/popup.html"
+  },
+  "background": {
+    "scripts": ["background.js"]
+  },
+  "permissions": [
+    "storage",
+    "unlimitedStorage"
+  ],
+  "host_permissions": [
+    "https://school.programmers.co.kr/*",
+    "https://github.com/*",
+    "https://api.github.com/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://school.programmers.co.kr/*"
+      ],
+      "css": [
+        "content/programmers.css"
+      ],
+      "js": [
+        "content/programmers.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "programmers-hub@jcm0314.github.io",
+      "strict_min_version": "109.0",
+      "data_collection_permissions": {
+        "required": ["none"]
+      }
+    }
+  }
+}
