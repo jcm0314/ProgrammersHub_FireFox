@@ -1,6 +1,6 @@
 # 프로그래머스허브 (ProgrammersHub for Firefox)
 
-기존 **백준허브(BaekjoonHub)**가 Firefox에서 동작하지 않는 원인들을 해결하여, 프로그래머스 문제 풀이 통과 시 **백준허브와 100% 동일한 폴더/파일/README/커밋 메시지 규격**으로 GitHub 저장소에 자동 커밋해 주는 Firefox 전용 확장 프로그램입니다.
+기존 백준허브(BaekjoonHub)가 Firefox에서 동작하지 않는 원인들을 해결하여, 프로그래머스 문제 풀이 통과 시 **백준허브와 100% 동일한 폴더/파일/README/커밋 메시지 규격**으로 GitHub 저장소에 자동 커밋해 주는 Firefox 전용 확장 프로그램입니다.
 
 ---
 
